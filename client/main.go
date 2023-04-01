@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"log"
 	"net/http"
 	"os"
 	"time"
@@ -36,7 +37,10 @@ func main() {
 		panic(err)
 	}
 	defer res.Body.Close()
-
+	if res.StatusCode != 200 {
+		log.Fatalln("Request Error : ", res.Status)
+		return
+	}
 	payload, err := io.ReadAll(res.Body)
 	if err != nil {
 		panic(err)
